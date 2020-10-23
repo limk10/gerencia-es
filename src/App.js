@@ -1,10 +1,9 @@
 import React from 'react';
-import Test from '~/components/Test';
 
 function App() {
   return (
     <div className="App">
-      <Test />
+      <h1>APP</h1>
     </div>
   );
 }
