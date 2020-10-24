@@ -1,0 +1,17 @@
+import axios from 'axios';
+import { getToken } from '~/services/auth';
+
+const api = axios.create({
+  baseURL: 'http://127.0.0.1:3333',
+});
+
+api.interceptors.request.use(async (config) => {
+  const token = getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`; // eslint-disable-line no-param-reassign
+  }
+
+  return config;
+});
+
+export default api;
