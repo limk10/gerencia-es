@@ -2,12 +2,12 @@ import React from "react";
 
 import { Container } from "./styles";
 
-function NotFound() {
+function Form() {
   return (
     <Container>
-      <h1>Page Not Found</h1>
+      <h1>Form User</h1>
     </Container>
   );
 }
 
-export default NotFound;
+export default Form;

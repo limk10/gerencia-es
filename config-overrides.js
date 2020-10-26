@@ -1,14 +1,11 @@
-const {
-  addBabelPlugin,
-  override,
-} = require('customize-cra');
+const { addBabelPlugin, override } = require("customize-cra");
 
 const rootImport = [
-  'root-import',
+  "root-import",
   {
-    rootPathPrefix: '~',
-    rootPathSuffix: 'src',
-  },
+    rootPathPrefix: "~",
+    rootPathSuffix: "src"
+  }
 ];
 
 module.exports = override(addBabelPlugin(rootImport));

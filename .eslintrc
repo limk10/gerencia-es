@@ -1,27 +1,23 @@
 {
-  "parser": "babel-eslint",
-  "extends": "airbnb",
-  "env": {
-    "browser": true,
-    "jest": true
-  },
-  "plugins": ["react", "jsx-a11y", "import"],
+  "extends": [
+    "prettier",
+    "prettier/standard",
+    "prettier/react",
+    "plugin:react/recommended"
+  ],
+  "plugins": ["prettier"],
   "rules": {
     "react/prop-types": 0,
-    "react/jsx-filename-extension": [
-      "error",
-      {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      }
-    ],
-    "import/prefer-default-export": "off"
+    "prettier/prettier": "error"
+  },
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true
   },
   "settings": {
-    "import/resolver": {
-      "babel-plugin-root-import": {
-        "rootPathPrefix": "~",
-        "rootPathSuffix": "src"
-      }
+    "react": {
+      "pragma": "React",
+      "version": "detect"
     }
   }
 }
