@@ -21,7 +21,7 @@ export default createGlobalStyle`
     color: #f0f0f0;
     background: #00705C
   }
-
+  
   /* input,
   button {
     font-family: "Montserrat", sans-serif;

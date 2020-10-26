@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 0
   },
   image: {
-    width: `90%`,
+    width: `85%`,
     height: `auto`
   },
   buttonProgress: {

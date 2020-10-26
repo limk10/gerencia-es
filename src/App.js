@@ -6,7 +6,7 @@ import store from "~/store";
 import TopBar from "~/containers/Topbar";
 import Drawer from "~/containers/DrawerApp";
 import { isAuthenticated } from "~/services/auth";
-import { Box, makeStyles, Toolbar, Hidden } from "@material-ui/core";
+import { Box, makeStyles, Toolbar, Hidden, Zoom } from "@material-ui/core";
 import { BrowserRouter } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flexGrow: 1,
-    paddingLeft: theme.spacing(2)
+    paddingLeft: theme.spacing(1)
   }
 }));
 
@@ -32,7 +32,7 @@ const App = () => {
               <Drawer />
             </Hidden>
             <main className={classes.content}>
-              <Box p={4}>
+              <Box p={3}>
                 <Toolbar />
                 <Routes />
               </Box>

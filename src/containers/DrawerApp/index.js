@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 import PersonOutlineTwoToneIcon from "@material-ui/icons/PersonOutlineTwoTone";
 import MeetingRoomTwoToneIcon from "@material-ui/icons/MeetingRoomTwoTone";
 import HomeTwoToneIcon from "@material-ui/icons/HomeTwoTone";
+import AttachMoneyTwoToneIcon from "@material-ui/icons/AttachMoneyTwoTone";
 import { logout } from "~/services/auth";
 
 const DrawerApp = () => {
@@ -52,7 +53,7 @@ const DrawerApp = () => {
           </ListItem>
           <ListItem onClick={() => navigateTo("/financeiro")} button key={1}>
             <ListItemIcon>
-              <PersonOutlineTwoToneIcon />
+              <AttachMoneyTwoToneIcon />
             </ListItemIcon>
             <ListItemText primary={"Financeiro"} />
           </ListItem>

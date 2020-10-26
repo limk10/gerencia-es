@@ -1,11 +1,13 @@
 import React from "react";
-
+import { Typography } from "@material-ui/core";
 import { Container } from "./styles";
 
 function NotFound() {
   return (
     <Container>
-      <h1>Page Not Found</h1>
+      <Typography variant="h4" gutterBottom>
+        Pagina não encontrada :(
+      </Typography>
     </Container>
   );
 }

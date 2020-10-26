@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 toast.configure();
 
 const api = axios.create({
-  baseURL: "http://54.233.246.10:3000/"
+  baseURL: "http://15.228.58.245:3000/"
 });
 
 api.interceptors.request.use(async config => {

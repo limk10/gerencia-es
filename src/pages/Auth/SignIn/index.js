@@ -10,7 +10,8 @@ import {
   Checkbox,
   Typography,
   CircularProgress,
-  Hidden
+  Hidden,
+  FormControl
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import businessGirlGreen from "~/assets/images/business-girl-green.png";
@@ -85,85 +86,88 @@ function SignIn() {
                 Bem-vindo(a) de volta!
               </Typography>
 
-              <TextField
-                className={[classes.textField, classes.paddingTop2_5]}
-                value={values.email}
-                onChange={handleChange("email")}
-                type="email"
-                id="outlined-email"
-                label="E-Mail"
-                variant="outlined"
-              />
+              <form style={{ display: "grid" }}>
+                <TextField
+                  className={[classes.textField, classes.paddingTop2_5]}
+                  value={values.email}
+                  onChange={handleChange("email")}
+                  type="email"
+                  id="outlined-email"
+                  label="E-Mail"
+                  variant="outlined"
+                />
 
-              <TextField
-                className={classes.textField}
-                id="outlined-password"
-                label="Senha"
-                variant="outlined"
-                type={values.showPassword ? "text" : "password"}
-                value={values.password}
-                onChange={handleChange("password")}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                      >
-                        {values.showPassword ? (
-                          <Visibility />
-                        ) : (
-                          <VisibilityOff />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  )
-                }}
-              />
+                <TextField
+                  className={classes.textField}
+                  id="outlined-password"
+                  label="Senha"
+                  variant="outlined"
+                  type={values.showPassword ? "text" : "password"}
+                  value={values.password}
+                  onChange={handleChange("password")}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                        >
+                          {values.showPassword ? (
+                            <Visibility />
+                          ) : (
+                            <VisibilityOff />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }}
+                />
 
-              <Grid container>
-                <Grid xs={6}>
-                  <Checkbox
-                    classes={{
-                      root: classes.checkboxForgotPass
-                    }}
-                    defaultChecked
-                    color="primary"
-                    checked={checked}
-                    onChange={() => setChecked(!checked)}
-                  />
-                  Lembrar de mim
+                <Grid container>
+                  <Grid xs={6}>
+                    <Checkbox
+                      classes={{
+                        root: classes.checkboxForgotPass
+                      }}
+                      defaultChecked
+                      color="primary"
+                      checked={checked}
+                      onChange={() => setChecked(!checked)}
+                    />
+                    Lembrar de mim
+                  </Grid>
+                  <Grid className={classes.gridForgotPassword} xs={6}>
+                    <Button
+                      size="small"
+                      href="javascript:void();"
+                      color="primary"
+                    >
+                      Esqueceu sua senha?
+                    </Button>
+                  </Grid>
                 </Grid>
-                <Grid className={classes.gridForgotPassword} xs={6}>
+
+                <div className={classes.wrapper}>
                   <Button
-                    size="small"
-                    href="javascript:void();"
+                    type="submit"
+                    onClick={() => login()}
+                    className={classes.paddingTop1_5}
+                    variant="contained"
                     color="primary"
+                    disabled={loading}
+                    fullWidth={true}
                   >
-                    Esqueceu sua senha?
+                    ENTRAR :)
                   </Button>
-                </Grid>
-              </Grid>
-
-              <div className={classes.wrapper}>
-                <Button
-                  onClick={() => login()}
-                  className={classes.paddingTop1_5}
-                  variant="contained"
-                  color="primary"
-                  disabled={loading}
-                  fullWidth={true}
-                >
-                  ENTRAR :)
-                </Button>
-                {loading && (
-                  <CircularProgress
-                    size={24}
-                    className={classes.buttonProgress}
-                  />
-                )}
-              </div>
+                  {loading && (
+                    <CircularProgress
+                      size={24}
+                      className={classes.buttonProgress}
+                    />
+                  )}
+                </div>
+              </form>
             </Grid>
           </Grid>
         </Box>
