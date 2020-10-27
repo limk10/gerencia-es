@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
 const App = () => {
   const classes = useStyles();
   return (
-    <Provider store={store}>
+    <Provider store={store()}>
       <GlobalStyle />
       <BrowserRouter>
         {isAuthenticated() && (
