@@ -21,6 +21,10 @@ export default createGlobalStyle`
     color: #f0f0f0;
     background: #00705C
   }
+
+  .MuiInputLabel-outlined.MuiInputLabel-shrink {
+    transform: translate(20px, -6px) scale(0.75) !important;
+  }
   
   /* input,
   button {

@@ -54,9 +54,14 @@ function List() {
     setCollection(collection);
   };
 
-  const remove = () => {};
+  const remove = id => {
+    handleClose();
+    console.log("remove id", id);
+  };
 
-  const edit = () => {};
+  const edit = id => {
+    console.log("edit id", id);
+  };
 
   const columns = [
     { field: "id", headerName: "#", width: 100 },
@@ -74,10 +79,12 @@ function List() {
       headerName: "Ações",
       width: 250,
       displayName: "Hello",
-      renderCell: function buttonActions() {
+      renderCell: function buttonActions({ rowModel }) {
+        const { data } = rowModel;
+
         return (
           <div>
-            <IconButton onClick={edit()}>
+            <IconButton onClick={() => edit(data.id)}>
               <EditOutlinedIcon />
             </IconButton>
             <IconButton
@@ -95,7 +102,7 @@ function List() {
               onClose={handleClose}
               TransitionComponent={Fade}
             >
-              <MenuItem onClick={remove()}>Excluir</MenuItem>
+              <MenuItem onClick={() => remove(data.id)}>Excluir</MenuItem>
             </Menu>
           </div>
         );

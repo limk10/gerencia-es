@@ -12,4 +12,4 @@ const reducers = (state = INITIAL_STATE, action) => {
   }
 };
 
-export { reducers };
+export default reducers;

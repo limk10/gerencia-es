@@ -15,8 +15,8 @@ function ConfirmDialog(params) {
   const open = useSelector(state => state.reducerModals.modalConfirmDialog);
 
   const {
-    title = "",
-    content = "",
+    title = "Confirm Dialog",
+    content = "Conteúdo Exemplo",
     titleButtonConfirm = "Confirmar",
     titleButtonCancel = "Cancelar",
     actionCancel = {},
@@ -26,14 +26,6 @@ function ConfirmDialog(params) {
   const handleClose = () => {
     dispatch(actionsModals.modalConfirmDialog(false));
   };
-
-  const handleOpen = () => {
-    dispatch(actionsModals.modalConfirmDialog(true));
-  };
-
-  useEffect(() => {
-    console.log(open);
-  }, []);
 
   return (
     <Dialog

@@ -24,6 +24,7 @@ import _ from "lodash";
 import ModalConfirmDialog from "~/components/ModalConfirmDialog";
 import api from "~/services/api";
 import { useDispatch } from "react-redux";
+import actionsModal from "~/actions/modals";
 
 function Form() {
   const history = useHistory();
@@ -57,64 +58,68 @@ function Form() {
     return retVal;
   }
 
-  const submit = e => {
+  const submit = async e => {
     e.preventDefault();
-    dispatch(state => console.log("->", state.modalConfirmDialog));
-    // setLoading(true);
-    // let errors = {};
+    let errors = {};
 
-    // const _password = form?.generatePassword
-    //   ? form?.password
-    //   : await generatePassword();
+    const _password = form?.generatePassword
+      ? form?.password
+      : await generatePassword();
 
-    // if (!_password) {
-    //   errors["password"] = "O campo senha é obrigatório";
-    // }
+    handleChange("password", _password);
 
-    // await schemaUsuario
-    //   .validate(form, { abortEarly: false })
-    //   .catch(({ inner }) => {
-    //     inner.map(({ path, message }) => {
-    //       errors[path] = message;
-    //     });
-    //   });
+    if (!_password) {
+      errors["password"] = "O campo senha é obrigatório";
+    }
 
-    // if (!_.isEmpty(errors)) {
-    //   Object.keys(errors).map(item => {
-    //     toast.error(`${errors[item]}`, {
-    //       position: "top-right",
-    //       autoClose: 5000,
-    //       hideProgressBar: false,
-    //       closeOnClick: true,
-    //       pauseOnHover: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //       pauseOnFocusLoss: false
-    //     });
-    //   });
-    //   setLoading(false);
-    //   return;
-    // }
+    await schemaUsuario
+      .validate(form, { abortEarly: false })
+      .catch(({ inner }) => {
+        inner.map(({ path, message }) => {
+          errors[path] = message;
+        });
+      });
 
-    // const data = {
-    //   firstname: form?.firstname,
-    //   lastname: form?.lastname,
-    //   birthdate: form?.birthdate,
-    //   email: form?.email,
-    //   active: form?.active,
-    //   userType: 1,
-    //   password: _password
-    // };
+    if (!_.isEmpty(errors)) {
+      Object.keys(errors).map(item => {
+        toast.error(`${errors[item]}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          pauseOnFocusLoss: false
+        });
+      });
+      return;
+    }
 
-    // try {
-    //   const result = await api.post("/register", data);
+    dispatch(actionsModal.modalConfirmDialog(true));
+  };
 
-    //   setLoading(false);
-    //   navigateTo("/user");
-    //   console.log(result);
-    // } catch (error) {
-    //   setLoading(false);
-    // }
+  const confirmSubmit = async () => {
+    setLoading(true);
+
+    const data = {
+      firstname: form?.firstname,
+      lastname: form?.lastname,
+      birthdate: form?.birthdate,
+      email: form?.email,
+      active: form?.active,
+      userType: 1,
+      password: form?.password
+    };
+
+    try {
+      const result = await api.post("/register", data);
+      dispatch(actionsModal.modalConfirmDialog(false));
+      setLoading(false);
+      navigateTo("/user");
+    } catch (error) {
+      setLoading(false);
+    }
   };
 
   const handleClickShowPassword = () => {
@@ -128,7 +133,7 @@ function Form() {
   const classes = useStyles();
   return (
     <>
-      <ModalConfirmDialog form={{ a: "b", b: "b" }} />
+      <ModalConfirmDialog actionConfirm={confirmSubmit} />
       <Fade in={true}>
         <Container>
           <Typography variant="h4" gutterBottom>
@@ -136,9 +141,9 @@ function Form() {
           </Typography>
           <Card>
             <CardContent>
-              <form noValidate autoComplete="off">
+              <form noValidate autoComplete="false">
                 <Grid container>
-                  <Grid xs={4}>
+                  <Grid xs={12} md={4}>
                     <TextField
                       value={form.firstname}
                       onChange={e => handleChange("firstname", e.target.value)}
@@ -147,7 +152,7 @@ function Form() {
                       label="Primeiro Nome"
                     />
                   </Grid>
-                  <Grid xs={4}>
+                  <Grid xs={12} md={4}>
                     <TextField
                       value={form.lastname}
                       onChange={e => handleChange("lastname", e.target.value)}
@@ -156,7 +161,7 @@ function Form() {
                       label="Último Nome"
                     />
                   </Grid>
-                  <Grid xs={4}>
+                  <Grid xs={12} md={4}>
                     <TextField
                       value={form.birthdate}
                       onChange={e => handleChange("birthdate", e.target.value)}
@@ -172,7 +177,7 @@ function Form() {
                   </Grid>
                 </Grid>
                 <Grid container>
-                  <Grid xs={8}>
+                  <Grid xs={12} md={8}>
                     <TextField
                       value={form.email}
                       onChange={e => handleChange("email", e.target.value)}
@@ -182,21 +187,21 @@ function Form() {
                       label="E-mail"
                     />
                   </Grid>
-                  <Grid className={classes.gridSwitch} xs={4}>
+                  <Grid className={classes.gridSwitch} xs={12} md={4}>
                     <FormControlLabel
                       className={classes.switchActive}
                       p={5}
                       control={
                         <Switch
-                          value={form.active}
+                          checked={form?.active}
                           onChange={e =>
-                            handleChange("ative", e.target.checked)
+                            handleChange("active", e.target.checked)
                           }
                           name="checkedB"
                           color="primary"
                         />
                       }
-                      label="Úsuario Ativo ?"
+                      label="Ativar usuário?"
                     />
                   </Grid>
                 </Grid>

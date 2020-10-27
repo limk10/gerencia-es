@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { reducers as reducerModals } from "./modals";
+import reducerModals from "./modals";
 
 const reducers = combineReducers({
   reducerModals
