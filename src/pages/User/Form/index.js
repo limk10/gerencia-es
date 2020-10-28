@@ -18,13 +18,14 @@ import { Container, useStyles } from "./styles";
 import { useHistory } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { schemaUsuario } from "~/helpers/formValidation";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import _ from "lodash";
 import ModalConfirmDialog from "~/components/ModalConfirmDialog";
 import api from "~/services/api";
 import { useDispatch } from "react-redux";
 import actionsModal from "~/actions/modals";
+import moment from "moment";
 
 function Form() {
   const history = useHistory();
@@ -100,6 +101,8 @@ function Form() {
   };
 
   const confirmSubmit = async () => {
+    dispatch(actionsModal.modalConfirmDialog(false));
+
     setLoading(true);
 
     const data = {
@@ -114,9 +117,19 @@ function Form() {
 
     try {
       const result = await api.post("/register", data);
-      dispatch(actionsModal.modalConfirmDialog(false));
       setLoading(false);
       navigateTo("/user");
+
+      toast.info(`Usuário ${form?.firstname} criado(a) com sucesso!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        pauseOnFocusLoss: false
+      });
     } catch (error) {
       setLoading(false);
     }
@@ -133,7 +146,51 @@ function Form() {
   const classes = useStyles();
   return (
     <>
-      <ModalConfirmDialog actionConfirm={confirmSubmit} />
+      <ModalConfirmDialog
+        content={
+          <div>
+            <Typography variant="h6" gutterBottom>
+              Use <b>email</b> e <b>senha</b> para efetuar o login!
+            </Typography>
+
+            <ul>
+              <li>
+                <Typography variant="body1" gutterBottom>
+                  <b>Primeiro Nome:</b> {form?.firstname}
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body1" gutterBottom>
+                  <b>Ultimo nome:</b> {form?.lastname}
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body1" gutterBottom>
+                  <b>Date de Nascimento:</b>{" "}
+                  {moment(form?.birthdate).format("DD/MM/YYYY")}
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body1" gutterBottom>
+                  <b>Email:</b> {form?.email}
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body1" gutterBottom>
+                  <b>Ativo:</b> {form?.active ? "Sim" : "Não"}
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body1" gutterBottom>
+                  <b>Senha:</b> {form?.password}
+                </Typography>
+              </li>
+            </ul>
+          </div>
+        }
+        title={"Resumo do Cadastro"}
+        actionConfirm={confirmSubmit}
+      />
       <Fade in={true}>
         <Container>
           <Typography variant="h4" gutterBottom>

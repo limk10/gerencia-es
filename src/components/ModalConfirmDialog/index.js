@@ -19,8 +19,8 @@ function ConfirmDialog(params) {
     content = "Conteúdo Exemplo",
     titleButtonConfirm = "Confirmar",
     titleButtonCancel = "Cancelar",
-    actionCancel = {},
-    actionConfirm = {}
+    actionConfirm = {},
+    disableActionConfirm = false
   } = params;
 
   const handleClose = () => {
@@ -34,9 +34,7 @@ function ConfirmDialog(params) {
       // PaperComponent={PaperComponent}
       aria-labelledby="draggable-dialog-title"
     >
-      <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
-        {title}
-      </DialogTitle>
+      <DialogTitle id="draggable-dialog-title">{title}</DialogTitle>
       <DialogContent>
         <DialogContentText>{content}</DialogContentText>
       </DialogContent>
@@ -44,7 +42,11 @@ function ConfirmDialog(params) {
         <Button autoFocus onClick={() => handleClose()} color="primary">
           {titleButtonCancel}
         </Button>
-        <Button onClick={() => actionConfirm()} color="primary">
+        <Button
+          disabled={disableActionConfirm}
+          onClick={() => actionConfirm()}
+          color="primary"
+        >
           {titleButtonConfirm}
         </Button>
       </DialogActions>
