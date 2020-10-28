@@ -6,16 +6,22 @@ import {
   IconButton,
   Typography,
   Menu,
-  MenuItem
+  MenuItem,
+  Hidden
 } from "@material-ui/core";
 import { ExitToApp, PersonOutline, AccountCircle } from "@material-ui/icons";
 import { logout } from "~/services/auth";
 import { useHistory } from "react-router-dom";
 import MonetizationOnOutlinedIcon from "@material-ui/icons/MonetizationOnOutlined";
+import MenuIcon from "@material-ui/icons/Menu";
+import { useDispatch, useSelector } from "react-redux";
+import actionDrawer from "~/actions/drawer";
 
 function Topbar() {
   const history = useHistory();
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const openDrawer = useSelector(state => state.reducerDrawer.drawerApp);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const user = localStorage.getItem("gerencia-es.user");
@@ -44,6 +50,14 @@ function Topbar() {
     <>
       <AppBar position="fixed" className={classes.appbar}>
         <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={() => dispatch(actionDrawer.drawerApp(!openDrawer))}
+            edge="start"
+          >
+            <MenuIcon />
+          </IconButton>
           <Typography
             onClick={() => history.push("/")}
             variant="h6"
@@ -62,13 +76,17 @@ function Topbar() {
               color="inherit"
             >
               <AccountCircle fontSize="large" />
-              <Typography
-                style={{ marginLeft: 10, marginTop: 8 }}
-                variant="body1"
-                gutterBottom
-              >
-                {parsedUser?.firstname} {parsedUser?.lastname}
-              </Typography>
+              {
+                <Hidden smDown>
+                  <Typography
+                    style={{ marginLeft: 10, marginTop: 8 }}
+                    variant="body1"
+                    gutterBottom
+                  >
+                    {parsedUser?.firstname} {parsedUser?.lastname}
+                  </Typography>
+                </Hidden>
+              }
             </IconButton>
             <Menu
               id="menu-appbar"

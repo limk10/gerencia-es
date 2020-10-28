@@ -1,11 +1,29 @@
 import React from "react";
 import { Grid, Typography, Card, CardContent } from "@material-ui/core";
 import { Container, useStyles } from "./styles";
-
+import { useDispatch } from "react-redux";
+import actionDrawner from "~/actions/drawer";
 function Dashboard() {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const user = localStorage.getItem("gerencia-es.user");
   const parsedUser = JSON.parse(user);
+
+  function getWidth() {
+    if (self.innerWidth) {
+      return self.innerWidth;
+    } else if (
+      document.documentElement &&
+      document.documentElement.clientHeight
+    ) {
+      return document.documentElement.clientWidth;
+    } else if (document.body) {
+      return document.body.clientWidth;
+    }
+    return 0;
+  }
+
+  if (getWidth() < 1000) dispatch(actionDrawer.drawerApp(false));
 
   return (
     <Container>
