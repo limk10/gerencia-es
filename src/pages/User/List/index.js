@@ -16,12 +16,14 @@ import {
   Collapse,
   FormControl,
   InputLabel,
-  Select
+  Select,
+  Divider,
+  InputAdornment
 } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import { useStyles, Container } from "./styles";
 import moment from "moment";
-import { getUserType } from "~/helpers/user";
+import { getUserType, generatePassword } from "~/helpers/user";
 import api from "~/services/api";
 import { useHistory } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -32,17 +34,25 @@ import "react-toastify/dist/ReactToastify.css";
 import ModalConfirmDialog from "~/components/ModalConfirmDialog";
 import { useDispatch } from "react-redux";
 import actionModals from "~/actions/modals";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
+import { schemaUsuario } from "~/helpers/formValidation";
 
 function List() {
   const classes = useStyles();
   const [collection, setCollection] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [collectionUser, setCollectionUser] = useState({});
+  const [userCollection, setUserCollection] = useState({});
   const [loading, setLoading] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [filter, setFilter] = useState({});
+  const [values, setValues] = useState({
+    showPassword: false
+  });
   const dispatch = useDispatch();
   const open = Boolean(anchorEl);
+
+  const user = localStorage.getItem("gerencia-es.user");
+  const parsedUser = JSON.parse(user);
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);
@@ -71,7 +81,6 @@ function List() {
     try {
       // Por conta do Json Server, não foi possível fazer a paginação pois ele não
       // retorna os dados necessarios para paginação
-      console.log(filter);
       const { data } = await api.get(`/users`, {
         params: {
           ...filter
@@ -94,15 +103,24 @@ function List() {
   };
 
   const handleChange = (prop, value) => {
-    collectionUser[prop] = value;
-    setCollectionUser({ ...collectionUser });
+    userCollection[prop] = value;
+    setUserCollection({ ...userCollection });
   };
 
   const handleChangeFilter = (prop, value) => {
-    console.log(JSON.stringify(value));
     filter[prop] = value;
     setFilter({ ...filter });
   };
+
+  useEffect(() => {
+    if (userCollection?.newPassword || userCollection?.generatePassword) {
+      const _password = userCollection?.generatePassword
+        ? ""
+        : generatePassword();
+
+      handleChange("password", _password);
+    }
+  }, [userCollection?.newPassword, userCollection?.generatePassword]);
 
   const remove = async ({ id, codeUserType }) => {
     setLoading(true);
@@ -140,11 +158,19 @@ function List() {
     }
   };
 
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword });
+  };
+
+  const handleMouseDownPassword = event => {
+    event.preventDefault();
+  };
+
   const edit = async id => {
     setLoading(true);
     try {
       const { data: collection } = await api.get(`/users/${id}`);
-      setCollectionUser({
+      setUserCollection({
         ...collection,
         userType: getUserType(collection?.userType),
         codeUserType: collection?.userType,
@@ -161,13 +187,72 @@ function List() {
     }
   };
 
-  const submitEdit = () => {};
+  const submitEdit = async () => {
+    setLoading(true);
+    let errors = {};
+
+    await schemaUsuario
+      .validate(userCollection, { abortEarly: false })
+      .catch(({ inner }) => {
+        inner.map(({ path, message }) => {
+          errors[path] = message;
+        });
+      });
+
+    if (!_.isEmpty(errors)) {
+      Object.keys(errors).map(item => {
+        toast.error(`${errors[item]}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          pauseOnFocusLoss: false
+        });
+      });
+      setLoading(false);
+      return;
+    }
+
+    const data = {
+      firstname: userCollection?.firstname,
+      lastname: userCollection?.lastname,
+      birthdate: userCollection?.birthdate,
+      email: userCollection?.email,
+      active: userCollection?.active,
+      userType: userCollection?.codeUserType,
+      ...(userCollection?.newPassword
+        ? { password: userCollection?.password }
+        : "")
+    };
+
+    try {
+      const result = await api.patch(`/users/${userCollection.id}`, data);
+      init();
+      dispatch(actionModals.modalConfirmDialog(false));
+      setLoading(false);
+      toast.info(`Usuário ${userCollection?.firstname} editado com sucesso!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        pauseOnFocusLoss: false
+      });
+    } catch (error) {
+      setLoading(false);
+    }
+  };
 
   const details = async id => {
     setLoading(true);
     try {
       const { data: collection } = await api.get(`/users/${id}`);
-      setCollectionUser({
+      setUserCollection({
         ...collection,
         isEdit: false,
         titleConfirmDialog: `Detalhes do ${
@@ -205,11 +290,13 @@ function List() {
             <IconButton onClick={() => details(data.id)}>
               <VisibilityOutlinedIcon />
             </IconButton>
-            {data.codeUserType !== 0 && (
+            {parsedUser.userType === 0 && (
+              <IconButton onClick={() => edit(data.id)}>
+                <EditOutlinedIcon />
+              </IconButton>
+            )}
+            {parsedUser.userType === 0 && data.codeUserType !== 0 && (
               <>
-                <IconButton onClick={() => edit(data.id)}>
-                  <EditOutlinedIcon />
-                </IconButton>
                 <IconButton
                   aria-controls="fade-menu"
                   aria-haspopup="true"
@@ -247,8 +334,8 @@ function List() {
             <Grid container>
               <Grid xs={12} md={4}>
                 <TextField
-                  disabled={!collectionUser?.isEdit}
-                  value={collectionUser?.firstname}
+                  disabled={!userCollection?.isEdit}
+                  value={userCollection?.firstname}
                   onChange={e => handleChange("firstname", e.target.value)}
                   className={classes.textField}
                   variant="outlined"
@@ -257,8 +344,8 @@ function List() {
               </Grid>
               <Grid xs={12} md={4}>
                 <TextField
-                  disabled={!collectionUser?.isEdit}
-                  value={collectionUser?.lastname}
+                  disabled={!userCollection?.isEdit}
+                  value={userCollection?.lastname}
                   onChange={e => handleChange("lastname", e.target.value)}
                   className={classes.textField}
                   variant="outlined"
@@ -267,8 +354,8 @@ function List() {
               </Grid>
               <Grid xs={12} md={4}>
                 <TextField
-                  disabled={!collectionUser?.isEdit}
-                  value={collectionUser?.birthdate}
+                  disabled={!userCollection?.isEdit}
+                  value={userCollection?.birthdate}
                   onChange={e => handleChange("birthdate", e.target.value)}
                   id="date"
                   label="Data de Nascimento"
@@ -282,8 +369,8 @@ function List() {
               </Grid>
               <Grid xs={12}>
                 <TextField
-                  disabled={!collectionUser?.isEdit}
-                  value={collectionUser?.email}
+                  disabled={!userCollection?.isEdit}
+                  value={userCollection?.email}
                   onChange={e => handleChange("email", e.target.value)}
                   type="email"
                   className={classes.textField}
@@ -297,8 +384,8 @@ function List() {
                   p={5}
                   control={
                     <Switch
-                      disabled={!collectionUser?.isEdit}
-                      checked={collectionUser?.active}
+                      disabled={!userCollection?.isEdit}
+                      checked={userCollection?.active}
                       onChange={e => handleChange("active", e.target.checked)}
                       name="checkedB"
                       color="primary"
@@ -307,11 +394,135 @@ function List() {
                   label="Ativar usuário?"
                 />
               </Grid>
+              <Grid className={classes.gridSwitch} xs={12}>
+                <FormControlLabel
+                  className={classes.switchActive}
+                  p={5}
+                  control={
+                    <Switch
+                      disabled={!userCollection?.isEdit}
+                      checked={userCollection?.newPassword}
+                      onChange={e =>
+                        handleChange("newPassword", e.target.checked)
+                      }
+                      name="checkedB"
+                      color="primary"
+                    />
+                  }
+                  label="Definir nova senha"
+                />
+              </Grid>
+
+              <Collapse
+                className={classes.gridPassword}
+                in={userCollection?.newPassword}
+              >
+                <Divider className={classes.dividerForm} light />
+                <Grid className={classes.gridPassword} container>
+                  <Grid xs={12}>
+                    <Typography
+                      className={classes.textgeneratePassword}
+                      variant="body1"
+                      gutterBottom
+                    >
+                      Definir uma nova senha de forma manual?
+                    </Typography>
+                    {userCollection.generatePassword && (
+                      <Typography
+                        className={classes.gridPassword}
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                      >
+                        Insira uma <b>nova senha</b> para o usuário, essa senha
+                        será usada para entrar no sistema
+                      </Typography>
+                    )}
+                    {!userCollection.generatePassword && (
+                      <Typography
+                        className={classes.gridPassword}
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                      >
+                        Ao escolher a modalidade <b>automatica</b>, é gerado uma
+                        senha randomicamente de 4 digitos.
+                      </Typography>
+                    )}
+
+                    <Grid
+                      component="label"
+                      container
+                      alignItems="center"
+                      className={classes.gridSwitch}
+                    >
+                      <Grid item>Não</Grid>
+                      <Grid item>
+                        <Switch
+                          value={userCollection.generatePassword}
+                          onChange={e =>
+                            handleChange("generatePassword", e.target.checked)
+                          }
+                          name="checkedB"
+                          color="primary"
+                        />
+                      </Grid>
+                      <Grid item>Sim</Grid>
+                    </Grid>
+
+                    <Fade in={!userCollection.generatePassword}>
+                      <Typography
+                        id="senha-gerada"
+                        variant="body1"
+                        gutterBottom
+                      >
+                        <b>Senha gerada:</b> {userCollection?.password}
+                      </Typography>
+                    </Fade>
+
+                    <Collapse in={userCollection.generatePassword}>
+                      <Grid container>
+                        <Grid spacing={5} xs={12}>
+                          <TextField
+                            className={[classes.textFieldPass]}
+                            id="outlined-password"
+                            label="Senha"
+                            autoComplete={false}
+                            variant="outlined"
+                            type={values.showPassword ? "text" : "password"}
+                            value={userCollection.password}
+                            onChange={e =>
+                              handleChange("password", e.target.value)
+                            }
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                  >
+                                    {values.showPassword ? (
+                                      <Visibility />
+                                    ) : (
+                                      <VisibilityOff />
+                                    )}
+                                  </IconButton>
+                                </InputAdornment>
+                              )
+                            }}
+                          />
+                        </Grid>
+                      </Grid>
+                    </Collapse>
+                  </Grid>
+                </Grid>
+              </Collapse>
             </Grid>
           </form>
         }
-        title={collectionUser.titleConfirmDialog}
-        disableActionConfirm={!collectionUser.isEdit}
+        title={userCollection.titleConfirmDialog}
+        disableActionConfirm={!userCollection.isEdit}
         actionConfirm={submitEdit}
       />
       <Fade in={true}>
@@ -323,13 +534,15 @@ function List() {
               </Typography>
             </Grid>
             <Grid className={classes.gridButtons} item xs={6}>
-              <Button
-                onClick={() => navigateTo("/user/create")}
-                variant="outlined"
-                color="primary"
-              >
-                Novo Cliente
-              </Button>
+              {parsedUser.userType === 0 && (
+                <Button
+                  onClick={() => navigateTo("/user/create")}
+                  variant="outlined"
+                  color="primary"
+                >
+                  Novo Cliente
+                </Button>
+              )}
             </Grid>
             <Grid item xs={12}>
               <Button

@@ -6,7 +6,7 @@ function NotFound() {
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
-        Pagina não encontrada :(
+        Opsss... Pagina não encontrada :(
       </Typography>
     </Container>
   );

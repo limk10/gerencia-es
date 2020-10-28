@@ -18,6 +18,9 @@ function Topbar() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
+  const user = localStorage.getItem("gerencia-es.user");
+  const parsedUser = JSON.parse(user);
+
   const open = Boolean(anchorEl);
 
   const handleMenu = event => {
@@ -30,6 +33,11 @@ function Topbar() {
 
   const makeLogout = async () => {
     await logout();
+  };
+
+  const navigateTo = route => {
+    handleClose();
+    history.push(route);
   };
 
   return (
@@ -54,6 +62,13 @@ function Topbar() {
               color="inherit"
             >
               <AccountCircle fontSize="large" />
+              <Typography
+                style={{ marginLeft: 10, marginTop: 8 }}
+                variant="body1"
+                gutterBottom
+              >
+                {parsedUser?.firstname} {parsedUser?.lastname}
+              </Typography>
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -70,7 +85,7 @@ function Topbar() {
               open={open}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>
+              <MenuItem onClick={() => navigateTo("/perfil")}>
                 Perfil <PersonOutline className={classes.iconsMenuItem} />
               </MenuItem>
               <MenuItem onClick={() => makeLogout()}>

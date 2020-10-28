@@ -18,11 +18,14 @@ import businessGirlGreen from "~/assets/images/business-girl-green.png";
 import { useStyles } from "./styles";
 import { useHistory } from "react-router-dom";
 import { Redirect } from "react-router";
-
 import api from "~/services/api";
 import { signin, isAuthenticated } from "~/services/auth";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
 
 function SignIn() {
+  const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
 
@@ -57,7 +60,33 @@ function SignIn() {
       const { data: collection } = await api.post("/signin", data);
       const { accessToken } = collection;
       if (accessToken) {
-        await signin(accessToken);
+        // Implementado pois o endpoint /signin não retorna os dados do usuario
+        const { data: collection } = await api.get("/users", {
+          params: { email: values?.email }
+        });
+
+        const [item] = collection;
+
+        const { password, ...rest } = item;
+
+        if (item.active) {
+          localStorage.setItem("gerencia-es.user", JSON.stringify(rest));
+          await signin(accessToken);
+        } else {
+          toast.error(
+            `Usuário encontra-se desativado, entre em contato com um administrador para reativa-lo!`,
+            {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              pauseOnFocusLoss: false
+            }
+          );
+        }
       }
       setLoading(false);
     } catch (e) {

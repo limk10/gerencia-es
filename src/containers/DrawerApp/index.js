@@ -40,7 +40,7 @@ const DrawerApp = () => {
             <ListItemIcon>
               <HomeTwoToneIcon />
             </ListItemIcon>
-            <ListItemText primary={"Home"} />
+            <ListItemText primary={"Início"} />
           </ListItem>
         </List>
         <Divider />

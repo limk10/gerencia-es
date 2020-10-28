@@ -19,7 +19,8 @@ const useStyles = makeStyles(theme => ({
   gridSwitch: {
     display: "flex",
     alignSelf: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    marginTop: 20
   },
   cardFilter: {
     marginBottom: 10
@@ -31,6 +32,13 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(1),
     minWidth: 120,
     marginTop: 12
+  },
+  dividerForm: {
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2)
+  },
+  gridPassword: {
+    textAlign: "center"
   }
 }));
 

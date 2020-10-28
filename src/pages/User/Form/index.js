@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Typography,
   Grid,
@@ -18,6 +18,7 @@ import { Container, useStyles } from "./styles";
 import { useHistory } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { schemaUsuario } from "~/helpers/formValidation";
+import { generatePassword } from "~/helpers/user";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import _ from "lodash";
@@ -39,6 +40,13 @@ function Form() {
     password: ""
   });
 
+  const user = localStorage.getItem("gerencia-es.user");
+  const parsedUser = JSON.parse(user);
+
+  useEffect(() => {
+    if (parsedUser.userType !== 0) navigateTo("/");
+  }, []);
+
   const navigateTo = route => {
     history.push(route);
   };
@@ -47,17 +55,6 @@ function Form() {
     form[prop] = value;
     setForm({ ...form });
   };
-
-  function generatePassword() {
-    var length = 4;
-    const charset =
-      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let retVal = "";
-    for (var i = 0, n = charset.length; i < length; ++i) {
-      retVal += charset.charAt(Math.floor(Math.random() * n));
-    }
-    return retVal;
-  }
 
   const submit = async e => {
     e.preventDefault();

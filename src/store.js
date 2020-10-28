@@ -5,7 +5,10 @@ import thunk from "redux-thunk";
 
 const store = () => {
   const create = applyMiddleware(thunk)(createStore);
-  return create(reducers);
+  return create(
+    reducers,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  );
 };
 
 // const store = createStore(reducers, applyMiddleware(thunk));
