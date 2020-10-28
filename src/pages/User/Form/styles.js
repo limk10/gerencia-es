@@ -19,6 +19,11 @@ const useStyles = makeStyles(theme => ({
     alignSelf: "center",
     justifyContent: "center"
   },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    marginTop: 12
+  },
   buttonBack: {
     marginRight: 5
   },

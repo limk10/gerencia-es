@@ -12,7 +12,11 @@ import {
   Divider,
   InputAdornment,
   IconButton,
-  Fade
+  Fade,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from "@material-ui/core";
 import { Container, useStyles } from "./styles";
 import { useHistory } from "react-router-dom";
@@ -27,6 +31,7 @@ import api from "~/services/api";
 import { useDispatch } from "react-redux";
 import actionsModal from "~/actions/modals";
 import moment from "moment";
+import { getUserType } from "~/helpers/user";
 
 function Form() {
   const history = useHistory();
@@ -37,7 +42,8 @@ function Form() {
   });
   const [form, setForm] = useState({
     active: true,
-    password: ""
+    password: "",
+    userType: 1
   });
 
   const user = localStorage.getItem("gerencia-es.user");
@@ -108,7 +114,7 @@ function Form() {
       birthdate: form?.birthdate,
       email: form?.email,
       active: form?.active,
-      userType: 1,
+      userType: form?.userType,
       password: form?.password
     };
 
@@ -159,6 +165,11 @@ function Form() {
               <li>
                 <Typography variant="body1" gutterBottom>
                   <b>Ultimo nome:</b> {form?.lastname}
+                </Typography>
+              </li>
+              <li>
+                <Typography variant="body1" gutterBottom>
+                  <b>Tipo Usuário:</b> {getUserType(form?.userType)}
                 </Typography>
               </li>
               <li>
@@ -231,7 +242,7 @@ function Form() {
                   </Grid>
                 </Grid>
                 <Grid container>
-                  <Grid xs={12} md={8}>
+                  <Grid xs={12} md={4}>
                     <TextField
                       value={form.email}
                       onChange={e => handleChange("email", e.target.value)}
@@ -240,6 +251,26 @@ function Form() {
                       variant="outlined"
                       label="E-mail"
                     />
+                  </Grid>
+                  <Grid xs={12} md={4}>
+                    <FormControl
+                      variant="outlined"
+                      className={[classes.textField]}
+                    >
+                      <InputLabel id="demo-simple-select-outlined-label">
+                        Tipo
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-outlined-label"
+                        id="demo-simple-select-outlined"
+                        value={form?.userType}
+                        onChange={e => handleChange("userType", e.target.value)}
+                        label="Tipo"
+                      >
+                        <MenuItem value={0}>Administrador</MenuItem>
+                        <MenuItem value={1}>Usuário Padrão</MenuItem>
+                      </Select>
+                    </FormControl>
                   </Grid>
                   <Grid className={classes.gridSwitch} xs={12} md={4}>
                     <FormControlLabel

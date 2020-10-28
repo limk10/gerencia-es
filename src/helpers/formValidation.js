@@ -4,6 +4,7 @@ const schemaUsuario = yup.object().shape({
   firstname: yup.string().required("O campo primeiro nome é obrigatório!"),
   lastname: yup.string().required("O campo último nome é obrigatório!"),
   birthdate: yup.string().required("O campo data de nascimento é obrtaório!"),
+  userType: yup.string().required("O campo tipo usuário é obrigatório"),
   email: yup
     .string()
     .email()

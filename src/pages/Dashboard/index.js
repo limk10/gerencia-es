@@ -12,7 +12,7 @@ function Dashboard() {
       <Card>
         <CardContent>
           <Grid container>
-            <Grid xs={6}>
+            <Grid xs={12} md={6}>
               <Typography variant="h6" gutterBottom>
                 Olá, {parsedUser?.firstname} {parsedUser?.lastname}
                 <div className={classes.dividerApresentation} />

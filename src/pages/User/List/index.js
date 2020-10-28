@@ -528,12 +528,12 @@ function List() {
       <Fade in={true}>
         <Container>
           <Grid className={classes.gridHeader} container>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <Typography variant="h4" gutterBottom>
                 Gerenciar Usuário
               </Typography>
             </Grid>
-            <Grid className={classes.gridButtons} item xs={6}>
+            <Grid className={classes.gridButtons} item xs={12} md={6}>
               {parsedUser.userType === 0 && (
                 <Button
                   onClick={() => navigateTo("/user/create")}
@@ -544,7 +544,7 @@ function List() {
                 </Button>
               )}
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={6}>
               <Button
                 onClick={() => handleFilter()}
                 variant="outlined"
@@ -596,7 +596,7 @@ function List() {
                       <Select
                         labelId="demo-simple-select-outlined-label"
                         id="demo-simple-select-outlined"
-                        value={filter?.userType}
+                        value={filter?.userType_like}
                         onChange={e =>
                           handleChangeFilter("userType_like", e.target.value)
                         }
