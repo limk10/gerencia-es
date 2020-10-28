@@ -393,6 +393,7 @@ function Form() {
                       Voltar
                     </Button>
                     <Button
+                      className={classes.buttonBack}
                       type="submit"
                       onClick={e => submit(e)}
                       variant="outlined"
