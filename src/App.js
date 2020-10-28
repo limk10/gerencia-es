@@ -1,36 +1,43 @@
-import React, { Fragment, useEffect } from "react";
-import { Provider } from "react-redux";
+import React, { useState, Fragment, useEffect } from "react";
 import Routes from "~/routes";
 import GlobalStyle from "~/assets/css/global";
-import store from "~/store";
 import TopBar from "~/containers/Topbar";
 import Drawer from "~/containers/DrawerApp";
 import { isAuthenticated } from "~/services/auth";
-import { Box, makeStyles, Toolbar, Hidden, Zoom } from "@material-ui/core";
+import {
+  Box,
+  makeStyles,
+  Toolbar,
+  Fade,
+  Grow,
+  Hidden
+} from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
 import { BrowserRouter } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex"
   },
   content: {
-    flexGrow: 1,
-    paddingLeft: theme.spacing(1)
+    flexGrow: 1
   }
 }));
 
 const App = () => {
+  const theme = useTheme();
+  const open = useSelector(state => state.reducerDrawer.drawerApp);
   const classes = useStyles();
+
   return (
-    <Provider store={store()}>
+    <>
       <GlobalStyle />
       <BrowserRouter>
         {isAuthenticated() && (
           <div className={classes.root}>
             <TopBar />
-            <Hidden smDown>
-              <Drawer />
-            </Hidden>
+            {open && <Drawer />}
             <main className={classes.content}>
               <Box p={3}>
                 <Toolbar />
@@ -41,7 +48,7 @@ const App = () => {
         )}
         {!isAuthenticated() && <Routes />}
       </BrowserRouter>
-    </Provider>
+    </>
   );
 };
 
