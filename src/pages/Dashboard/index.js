@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Grid, Typography, Card, CardContent } from "@material-ui/core";
 import { Container, useStyles } from "./styles";
 import { useDispatch } from "react-redux";
-import actionDrawner from "~/actions/drawer";
+import actionDrawer from "~/actions/drawer";
+
 function Dashboard() {
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -23,14 +24,18 @@ function Dashboard() {
     return 0;
   }
 
-  if (getWidth() < 1000) dispatch(actionDrawer.drawerApp(false));
+  useEffect(() => {
+    console.log(getWidth());
+    if (getWidth() < 1000) dispatch(actionDrawer.drawerApp(false));
+    else dispatch(actionDrawer.drawerApp(true));
+  }, []);
 
   return (
     <Container>
       <Card>
         <CardContent>
           <Grid container>
-            <Grid xs={12} md={6}>
+            <Grid xs={12} lg={6}>
               <Typography variant="h6" gutterBottom>
                 Olá, {parsedUser?.firstname} {parsedUser?.lastname}
                 <div className={classes.dividerApresentation} />

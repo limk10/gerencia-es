@@ -5,7 +5,9 @@ export const Container = styled.div``;
 
 const useStyles = makeStyles(theme => ({
   gridButtons: {
-    textAlign: "end"
+    textAlign: "end",
+    marginTop: 10,
+    marginBottom: 10
   },
   textField: {
     width: `100%`,
