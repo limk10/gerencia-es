@@ -1,71 +1,82 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h3 align="center">
+    <br><br>
+    <b>Gerencie! Crud de usuários</b> 
+</h3>
 
-## Available Scripts
+<p align="center">
+<a href="https://www.linkedin.com/in/matheus-lopes-394240151/">
+    <img alt="Made by Rocketseat" src="https://img.shields.io/badge/made%20by-Matheus Lopes-%237519C1">
+  </a>
+  <a href="https://pt-br.reactjs.org/">
+    <img alt="Gerencia ES" src="https://img.shields.io/badge/made%20with-React-%237519C1">
+  </a>
+  <a>
+  <img alt="License" src="https://img.shields.io/github/license/vitorserrano/ecoleta?color=%237519C1">
+</p>
 
-In the project directory, you can run:
+# Índice
 
-### `yarn start`
+- [Sobre](#sobre)
+- [Documentação](#documentacao)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Como Usar](#como-usar)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<a id="sobre"></a>
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## :bookmark: Sobre
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+O sistema é um simples CRUD de usuário usando a biblioteca <b>React ❤</b>, com as tecnologias, <b>ESLint</b> com padrão standart para organização do código, <b>Babel Root Import </b> para organização de importações, <b>Redux Thunk</b> para controle de estados, <b>Material UI</b> para Kit de UI, as validações de formulários esta por conta do <b>Yup</b>, <b>Axios</b> para integração com o backend, implementado tratamento de erros no interceptor, <b>Moment</b> para tratamento de datas, também foi feito controle de permissões nas rotas, no login usado <b>JWT</b>, o backend foi adaptado para retornar um <b>token</b> para a autenticação do usuário... entre outras tecnologias.
 
-### `yarn build`
+<a id="documentacao"></a>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## :rocket: Tecnologias Utilizadas
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+O projeto foi desenvolvido utilizando algumas das tecnologias
 
-### `yarn eject`
+- [ReactJS](https://reactjs.org/)
+- [Redux](https://redux.js.org/)
+- [Material UI](https://material-ui.com/pt/)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+<a id="tecnologias-utilizadas"></a>
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## :fire: Como usar
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- ### **Pré-requisitos**
 
-## Learn More
+  - É **necessário** possuir o **[Node.js](https://nodejs.org/en/)** e o  **[GIT](https://git-scm.com/)** instalado na máquina
+  - Também, é **preciso** ter um gerenciador de pacotes seja o **[NPM](https://www.npmjs.com/)** ou **[Yarn](https://yarnpkg.com/)**.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. Faça um clone :
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```sh
+  $ git clone https://github.com/limk10/gerencia-es.git
+```
 
-### Code Splitting
+2. Executando a Aplicação:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```sh
+  # Entre na pasta raiz do projeto
+  $ cd gerencia-es
+    
+  # Instale as dependências
+  $ yarn
 
-### Analyzing the Bundle Size
+  # Execute a aplicação
+  $ yarn start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+<a id="como-usarr"></a>
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## :memo: License
 
-### Advanced Configuration
+Esse projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE.md) para mais detalhes.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+Feito com por [Matheus Lopes](https://github.com/limk10)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# gerencia-es
