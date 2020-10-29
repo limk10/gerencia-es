@@ -16,12 +16,17 @@ import MeetingRoomTwoToneIcon from "@material-ui/icons/MeetingRoomTwoTone";
 import HomeTwoToneIcon from "@material-ui/icons/HomeTwoTone";
 import AttachMoneyTwoToneIcon from "@material-ui/icons/AttachMoneyTwoTone";
 import { logout } from "~/services/auth";
+import { useDispatch } from "react-redux";
+import actionDrawer from "~/actions/drawer";
 
 const DrawerApp = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
   let history = useHistory();
 
   const navigateTo = route => {
+    dispatch(actionDrawer.drawerApp(false));
     history.push(route);
   };
 
@@ -51,12 +56,12 @@ const DrawerApp = () => {
             </ListItemIcon>
             <ListItemText primary={"Cliente"} />
           </ListItem>
-          <ListItem onClick={() => navigateTo("/financeiro")} button key={1}>
+          {/* <ListItem onClick={() => navigateTo("/financeiro")} button key={1}>
             <ListItemIcon>
               <AttachMoneyTwoToneIcon />
             </ListItemIcon>
             <ListItemText primary={"Financeiro"} />
-          </ListItem>
+          </ListItem> */}
         </List>
         <Divider />
         <List>
