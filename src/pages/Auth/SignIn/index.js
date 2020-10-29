@@ -153,29 +153,31 @@ function SignIn() {
                   }}
                 />
 
-                <Grid container>
+                {/* <Grid container>
                   <Grid xs={6}>
                     <Checkbox
                       classes={{
                         root: classes.checkboxForgotPass
                       }}
+                      disabled={true}
                       defaultChecked
                       color="primary"
                       checked={checked}
                       onChange={() => setChecked(!checked)}
                     />
-                    Lembrar de mim
+                    Lembrar-me
                   </Grid>
                   <Grid className={classes.gridForgotPassword} xs={6}>
                     <Button
                       size="small"
                       href="javascript:void();"
                       color="primary"
+                      disabled={true}
                     >
                       Esqueceu sua senha?
                     </Button>
                   </Grid>
-                </Grid>
+                </Grid> */}
 
                 <div className={classes.wrapper}>
                   <Button
